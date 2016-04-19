@@ -26,4 +26,23 @@ public class ContactHelper extends BaseHelper {
         fillField(By.name("email"), contactData.getEmail());
     }
 
+    public void clickModifyContactButton() {
+        clickButton(By.cssSelector("img[alt=\"Edit\"]"));
+    }
+
+    public void clickUpdateButton() {
+        clickButton(By.name("update"));
+    }
+
+    public void selectContact() {
+        clickButton(By.name("selected[]"));
+    }
+
+    public void clickDeleteButton() {
+        clickButton(By.xpath("//input[@value='Delete']"));
+    }
+
+    public void acceptDeletion() {
+        wd.switchTo().alert().accept();
+    }
 }

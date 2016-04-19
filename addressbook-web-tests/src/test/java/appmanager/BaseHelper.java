@@ -5,7 +5,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BaseHelper {
-    private FirefoxDriver wd;
+    protected FirefoxDriver wd;
 
     public BaseHelper(FirefoxDriver wd) {
         this.wd = wd;
