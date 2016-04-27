@@ -10,3 +10,5 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 .idea/workspace.xml
+addressbook-web-tests/chromedriver.exe
+addressbook-web-tests/IEDriverServer.exe
