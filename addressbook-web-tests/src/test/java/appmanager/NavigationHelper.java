@@ -12,7 +12,7 @@ public class NavigationHelper extends BaseHelper {
     public void gotoHomePage() {
         if (isElementPresent(By.id("maintable"))) return;
 
-        clickButton(By.linkText("home page"));
+        clickButton(By.linkText("home"));
     }
 
     public void gotoAddNewContactPage() {

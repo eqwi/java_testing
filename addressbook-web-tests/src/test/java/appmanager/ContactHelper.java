@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 
 public class ContactHelper extends BaseHelper {
 
+    private NavigationHelper navigationHelper = new NavigationHelper(wd);
+
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
@@ -44,5 +46,12 @@ public class ContactHelper extends BaseHelper {
 
     public void acceptDeletion() {
         wd.switchTo().alert().accept();
+    }
+
+    public void createContact(ContactData contactData) {
+        navigationHelper.gotoAddNewContactPage();
+        fillContactForm(contactData);
+        clickCreateButton();
+        navigationHelper.gotoHomePage();
     }
 }

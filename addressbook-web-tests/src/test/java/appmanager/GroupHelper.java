@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 
 public class GroupHelper extends BaseHelper {
 
+    private NavigationHelper navigationHelper = new NavigationHelper(wd);
+
     public GroupHelper (WebDriver wd) {
         super(wd);
     }
@@ -38,5 +40,16 @@ public class GroupHelper extends BaseHelper {
 
     public void clickDeleteButton() {
         clickButton(By.name("delete"));
+    }
+
+    public void createGroup(GroupData group) {
+        clickCreateNewGroup();
+        fillGroupForm(group);
+        clickCreate();
+        navigationHelper.gotoGroupPage();
+    }
+
+    public boolean isGroupExist() {
+        return isElementPresent(By.name("selected[]"));
     }
 }
