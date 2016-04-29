@@ -62,11 +62,12 @@ public class ContactHelper extends BaseHelper {
 
     public List<ContactData> getContactList() {
         List<ContactData> contacts = new ArrayList<>();
-        List<WebElement> listOfNames = wd.findElements(By.xpath("//input[@name=\"selected[]\"]"));
-        for (WebElement element : listOfNames) {
-            String name = element.getText();
-            ContactData contact = new ContactData(name, null, null, null, null, null, null, null, null);
-            contacts.add(contact);
+        List<WebElement> list = wd.findElements(By.xpath("//input[@name=\"selected[]\"]"));
+        for (int i = 2; i < list.size(); i++) {
+            String name = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[3]/td[" + i + "]")).getText();
+            String surname = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[" + i + "]")).getText();
+            String address = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[4]/td[" + i + "]")).getText();
+            contacts.add(new ContactData(name, surname, null, null, null, null, address, null, null));
         }
         return contacts;
     }
