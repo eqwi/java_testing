@@ -1,8 +1,13 @@
 package appmanager;
 
 import data.ContactData;
+import data.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends BaseHelper {
 
@@ -53,5 +58,16 @@ public class ContactHelper extends BaseHelper {
         fillContactForm(contactData);
         clickCreateButton();
         navigationHelper.gotoHomePage();
+    }
+
+    public List<ContactData> getContactList() {
+        List<ContactData> contacts = new ArrayList<>();
+        List<WebElement> listOfNames = wd.findElements(By.xpath("//input[@name=\"selected[]\"]"));
+        for (WebElement element : listOfNames) {
+            String name = element.getText();
+            ContactData contact = new ContactData(name, null, null, null, null, null, null, null, null);
+            contacts.add(contact);
+        }
+        return contacts;
     }
 }
