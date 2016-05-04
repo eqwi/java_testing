@@ -1,10 +1,10 @@
 package tests;
 
-import data.ContactData;
 import data.GroupData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupModificationTests extends TestBase {
@@ -16,12 +16,20 @@ public class GroupModificationTests extends TestBase {
             app.getGroupHelper().createGroup(new GroupData("New group", "There is header", "There is footer"));
         }
         List<GroupData> before = app.getGroupHelper().getGroupList();
-        app.getGroupHelper().selectGroup();
+        app.getGroupHelper().selectGroup(before.size() - 1);
         app.getGroupHelper().clickEditGroupButton();
-        app.getGroupHelper().fillGroupForm(new GroupData("new group name", "There is header", null));
+        GroupData modifyGroup = new GroupData(before.get(before.size() - 1).getId(), "new group name", "There is header", null);
+        app.getGroupHelper().fillGroupForm(modifyGroup);
         app.getGroupHelper().submitGroupUpdate();
         app.getNavigationHelper().gotoGroupPage();
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<GroupData> after = app.getGroupHelper().getGroupList();
         Assert.assertEquals(before.size(), after.size());
+
+        before.remove(before.size() - 1);
+        before.add(modifyGroup);
+        Comparator<? super GroupData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
+        before.sort(byId);
+        after.sort(byId);
+        Assert.assertEquals(after, before);
     }
 }

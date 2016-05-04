@@ -1,6 +1,5 @@
 package appmanager;
 
-import data.ContactData;
 import data.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,8 +30,8 @@ public class GroupHelper extends BaseHelper {
         clickButton(By.name("new"));
     }
 
-    public void selectGroup() {
-        clickButton(By.name("selected[]"));
+    public void selectGroup(int id) {
+        wd.findElements(By.name("selected[]")).get(id).click();
     }
 
     public void clickEditGroupButton() {
@@ -63,7 +62,8 @@ public class GroupHelper extends BaseHelper {
         List<WebElement> listOfNames = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : listOfNames) {
             String name = element.getText();
-            GroupData group = new GroupData(name, null, null);
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            GroupData group = new GroupData(id, name, null, null);
             groups.add(group);
         }
         return groups;
