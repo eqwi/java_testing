@@ -1,28 +1,35 @@
 package tests;
 
 import data.ContactData;
-import org.openqa.selenium.By;
+import data.Contacts;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactDeletionTests extends TestBase {
 
+    @BeforeMethod
+    private void testDataCheckout() {
+        if (app.contact().all().size() == 0) {
+            app.contact().create(new ContactData()
+                    .withName("name").withMidName("mid").withSurname("surname").withNickname("vahvah").withTitle("director")
+                    .withCompany("New Company").withAddress("spb").withPhone("8915196819").withEmail("name.mid.surname@newcompany.ru"));
+        }
+    }
+
     @Test
     public void testContactDeletion() {
-        if (!app.getSessionHelper().isElementPresent(By.name("selected[]"))) {
-            app.getContactHelper().createContact(new ContactData("name", "mid", "surname", "vahvah", "director", "New Company", "spb", "8915196819", "name.mid.surname@newcompany.ru"));
-        }
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().selectContact(before.size() - 1);
-        app.getContactHelper().clickDeleteButton();
-        app.getContactHelper().acceptDeletion();
-        app.getNavigationHelper().gotoHomePage();
-        List<ContactData> after = app.getContactHelper().getContactList();
+        Contacts before = app.contact().all();
+        ContactData deletedContact = before.iterator().next();
+        app.contact().delete(deletedContact);
+        app.goTo().homePage();
+        Contacts after = app.contact().all();
         Assert.assertEquals(before.size() - 1, after.size());
 
-        before.remove(before.size() - 1);
-        Assert.assertEquals(before, after);
+        assertThat(before.without(deletedContact), equalTo(after));
     }
+
 }

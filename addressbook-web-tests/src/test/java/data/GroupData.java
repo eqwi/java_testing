@@ -2,24 +2,10 @@ package data;
 
 public class GroupData {
 
-    private final String groupName;
-    private final String groupHeader;
-    private final String groupFooter;
-    private int id;
-
-    public GroupData(int id, String groupName, String groupHeader, String groupFooter) {
-        this.id = id;
-        this.groupName = groupName;
-        this.groupHeader = groupHeader;
-        this.groupFooter = groupFooter;
-    }
-
-    public GroupData(String groupName, String groupHeader, String groupFooter) {
-        this.id = Integer.MAX_VALUE;
-        this.groupName = groupName;
-        this.groupHeader = groupHeader;
-        this.groupFooter = groupFooter;
-    }
+    private String groupName;
+    private String groupHeader;
+    private String groupFooter;
+    private int id = Integer.MAX_VALUE;
 
     public String getGroupName() {
         return groupName;
@@ -37,20 +23,24 @@ public class GroupData {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GroupData groupData = (GroupData) o;
-
-        return groupName != null ? groupName.equals(groupData.groupName) : groupData.groupName == null;
-
+    public GroupData withName(String groupName) {
+        this.groupName = groupName;
+        return this;
     }
 
-    @Override
-    public int hashCode() {
-        return groupName != null ? groupName.hashCode() : 0;
+    public GroupData withHeader(String groupHeader) {
+        this.groupHeader = groupHeader;
+        return this;
+    }
+
+    public GroupData withFooter(String groupFooter) {
+        this.groupFooter = groupFooter;
+        return this;
+    }
+
+    public GroupData withId(int id) {
+        this.id = id;
+        return this;
     }
 
     @Override
@@ -59,5 +49,24 @@ public class GroupData {
                 "id='" + id + '\'' +
                 ", groupName='" + groupName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupData groupData = (GroupData) o;
+
+        if (id != groupData.id) return false;
+        return groupName != null ? groupName.equals(groupData.groupName) : groupData.groupName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = groupName != null ? groupName.hashCode() : 0;
+        result = 31 * result + id;
+        return result;
     }
 }

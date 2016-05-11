@@ -1,35 +1,34 @@
 package tests;
 
 import data.GroupData;
+import data.Groups;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupModificationTests extends TestBase {
 
+    @BeforeMethod
+    private void testDataCheckout() {
+        app.goTo().groupPage();
+        if (app.group().all().size() == 0) {
+            app.group().create(new GroupData().withName("New group").withHeader("There is header").withFooter("There is footer"));
+        }
+    }
+
     @Test
     public void testGroupModification() {
-        app.getNavigationHelper().gotoGroupPage();
-        if (!app.getGroupHelper().isGroupExist()) {
-            app.getGroupHelper().createGroup(new GroupData("New group", "There is header", "There is footer"));
-        }
-        List<GroupData> before = app.getGroupHelper().getGroupList();
-        app.getGroupHelper().selectGroup(before.size() - 1);
-        app.getGroupHelper().clickEditGroupButton();
-        GroupData modifyGroup = new GroupData(before.get(before.size() - 1).getId(), "new group name", "There is header", null);
-        app.getGroupHelper().fillGroupForm(modifyGroup);
-        app.getGroupHelper().submitGroupUpdate();
-        app.getNavigationHelper().gotoGroupPage();
-        List<GroupData> after = app.getGroupHelper().getGroupList();
+        Groups before = app.group().all();
+        GroupData modifiedGroup = before.iterator().next();
+        GroupData group = new GroupData().withId(modifiedGroup.getId()).withName("new group name").withHeader("There is header").withFooter(null);
+        app.group().modify(group);
+        Groups after = app.group().all();
         Assert.assertEquals(before.size(), after.size());
 
-        before.remove(before.size() - 1);
-        before.add(modifyGroup);
-        Comparator<? super GroupData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(after, before);
+        assertThat(before.without(modifiedGroup).withAdded(group), equalTo(after));
     }
+
 }

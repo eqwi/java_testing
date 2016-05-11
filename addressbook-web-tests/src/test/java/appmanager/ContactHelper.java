@@ -1,12 +1,16 @@
 package appmanager;
 
 import data.ContactData;
+import data.Contacts;
+import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends BaseHelper {
 
@@ -32,16 +36,16 @@ public class ContactHelper extends BaseHelper {
         fillField(By.name("email"), contactData.getEmail());
     }
 
-    public void clickModifyContactButton(int id) {
-        wd.findElements(By.xpath("//img[@title=\"Edit\"]")).get(id).click();
+    public void clickModifyContactButtonOfChosenContact(int id) {
+        wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
     }
 
     public void clickUpdateButton() {
         clickButton(By.name("update"));
     }
 
-    public void selectContact(int id) {
-        wd.findElements(By.name("selected[]")).get(id).click();
+    private void selectContactById(int id) {
+        wd.findElement(By.cssSelector("input[id='" + id + "']")).click();
     }
 
     public void clickDeleteButton() {
@@ -52,27 +56,37 @@ public class ContactHelper extends BaseHelper {
         wd.switchTo().alert().accept();
     }
 
-    public void createContact(ContactData contactData) {
-        navigationHelper.gotoAddNewContactPage();
+    public void create(ContactData contactData) {
+        navigationHelper.addNewContactPage();
         fillContactForm(contactData);
         clickCreateButton();
-        navigationHelper.gotoHomePage();
+        navigationHelper.homePage();
+    }
+    public void modify(ContactData contact) {
+        clickModifyContactButtonOfChosenContact(contact.getId());
+        fillContactForm(contact);
+        clickUpdateButton();
+        navigationHelper.homePage();
     }
 
-    public List<ContactData> getContactList() {
-        List<ContactData> contacts = new ArrayList<>();
+    public void delete(ContactData deletedContact) {
+        selectContactById(deletedContact.getId());
+        clickDeleteButton();
+        acceptDeletion();
+    }
+
+    public Contacts all() {
+        Contacts contacts = new Contacts();
         List<WebElement> list = wd.findElements(By.xpath("//tr[@name=\"entry\"]"));
+
+        int i = list.size();
         for (WebElement element : list) {
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
-            contacts.add(new ContactData(id, null, null, null, null, null, null, null, null, null));
-        }
-        for (int i = 2; i < list.size()+2; i++) {
-            int id = contacts.get(0).getId();
-            String name = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + i + "]/td[3]")).getText();
-            String surname = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + i + "]/td[2]")).getText();
-            String address = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + i + "]/td[4]")).getText();
-            contacts.remove(0);
-            contacts.add(new ContactData(id, name, null, surname, null, null, null, address, null, null));
+            String name = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[3]")).getText();
+            String surname = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[2]")).getText();
+            String address = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[4]")).getText();
+            contacts.add(new ContactData().withId(id).withName(name).withSurname(surname).withAddress(address));
+            i--;
         }
         return contacts;
     }

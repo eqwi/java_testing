@@ -1,36 +1,39 @@
 package tests;
 
 import data.ContactData;
-import org.openqa.selenium.By;
+import data.Contacts;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase {
 
+    @BeforeMethod
+    private void testDataCheckout() {
+        if (app.contact().all().size() == 0) {
+            app.contact().create(new ContactData()
+                    .withName("name").withMidName("mid").withSurname("surname").withNickname("vahvah").withTitle("director")
+                    .withCompany("New Company").withAddress("spb").withPhone("8915196819").withEmail("name.mid.surname@newcompany.ru"));
+        }
+    }
+
     @Test
     public void testContactModification() {
-        if (!app.getSessionHelper().isElementPresent(By.cssSelector("img[alt=\"Edit\"]"))) {
-            app.getContactHelper().createContact(new ContactData("name", "mid", "surname", "vahvah", "director", "New Company", "spb", "8915196819", "name.mid.surname@newcompany.ru"));
-        }
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().clickModifyContactButton(before.size() - 1);
-        ContactData modifyContact = new ContactData(before.get(before.size() - 1).getId(), "name11", "modified midname", "surname99",
-                                                    "modified nickname", "modified title", "modified company",
-                                                    "modified address", "11111111", "modified.mail@mail.ru");
-        app.getContactHelper().fillContactForm(modifyContact);
-        app.getContactHelper().clickUpdateButton();
-        app.getNavigationHelper().gotoHomePage();
-        List<ContactData> after = app.getContactHelper().getContactList();
+        Contacts before = app.contact().all();
+        ContactData modifiedContact = before.iterator().next();
+        ContactData contact = new ContactData()
+                .withId(modifiedContact.getId()).withName("name11").withMidName("modified midname").withSurname("surname99")
+                .withNickname("modified nickname").withTitle("modified title").withCompany("modified company").withAddress("modified address")
+                .withPhone("11111111").withEmail("modified.mail@mail.ru");
+
+        app.contact().modify(contact);
+        Contacts after = app.contact().all();
         Assert.assertEquals(before.size(), after.size());
 
-        before.remove(before.size() - 1);
-        before.add(modifyContact);
-        Comparator<? super ContactData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(before, after);
+        assertThat(before.without(modifiedContact).withAdded(contact), equalTo(after));
     }
+
 }
