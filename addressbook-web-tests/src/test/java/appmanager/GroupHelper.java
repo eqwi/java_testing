@@ -47,6 +47,10 @@ public class GroupHelper extends BaseHelper {
         clickButton(By.name("delete"));
     }
 
+    public int count() {
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
     public void create(GroupData group) {
         clickCreateNewGroup();
         fillGroupForm(group);
