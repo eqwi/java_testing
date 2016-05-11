@@ -2,18 +2,15 @@ package appmanager;
 
 import data.ContactData;
 import data.Contacts;
-import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends BaseHelper {
 
+    private Contacts contactCache = null;
     private NavigationHelper navigationHelper = new NavigationHelper(wd);
 
     public ContactHelper(WebDriver wd) {
@@ -60,23 +57,27 @@ public class ContactHelper extends BaseHelper {
         navigationHelper.addNewContactPage();
         fillContactForm(contactData);
         clickCreateButton();
+        contactCache = null;
         navigationHelper.homePage();
     }
     public void modify(ContactData contact) {
         clickModifyContactButtonOfChosenContact(contact.getId());
         fillContactForm(contact);
         clickUpdateButton();
+        contactCache = null;
         navigationHelper.homePage();
     }
 
     public void delete(ContactData deletedContact) {
         selectContactById(deletedContact.getId());
         clickDeleteButton();
+        contactCache = null;
         acceptDeletion();
     }
 
     public Contacts all() {
-        Contacts contacts = new Contacts();
+        if (contactCache != null) return new Contacts(contactCache);
+        contactCache = new Contacts();
         List<WebElement> list = wd.findElements(By.xpath("//tr[@name=\"entry\"]"));
 
         int i = list.size();
@@ -85,9 +86,9 @@ public class ContactHelper extends BaseHelper {
             String name = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[3]")).getText();
             String surname = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[2]")).getText();
             String address = wd.findElement(By.xpath("//table[@id='maintable']/tbody/tr[" + (list.size() - i + 2) + "]/td[4]")).getText();
-            contacts.add(new ContactData().withId(id).withName(name).withSurname(surname).withAddress(address));
+            contactCache.add(new ContactData().withId(id).withName(name).withSurname(surname).withAddress(address));
             i--;
         }
-        return contacts;
+        return contactCache;
     }
 }
