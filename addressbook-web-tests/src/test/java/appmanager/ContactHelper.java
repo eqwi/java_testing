@@ -41,6 +41,10 @@ public class ContactHelper extends BaseHelper {
         wd.findElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", id))).click();
     }
 
+    public void clickContactDetailedInfoButtonOfChosenContact(int id) {
+        wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']", id))).click();
+    }
+
     public void clickUpdateButton() {
         clickButton(By.name("update"));
     }
@@ -101,6 +105,20 @@ public class ContactHelper extends BaseHelper {
         return contactData;
     }
 
+    public ContactData collectContactDataFromDetailedInfoPage() {
+        ContactData contactData = new ContactData();
+        String[] contactInfo = wd.findElement(By.xpath("//div[@id='content']")).getText().split("\n");
+        contactInfo[6] = contactInfo[6].replaceAll("H: ", "");
+        contactInfo[7] = contactInfo[7].replaceAll("M: ", "");
+        contactInfo[8] = contactInfo[8].replaceAll("W: ", "");
+        contactInfo[10] = contactInfo[10].substring(0, contactInfo[10].indexOf("(")-1);
+        contactInfo[11] = contactInfo[11].substring(0, contactInfo[11].indexOf("(")-1);
+        contactInfo[12] = contactInfo[12].substring(0, contactInfo[12].indexOf("(")-1);
+        return contactData.withFullName(contactInfo[0]).withNickname(contactInfo[1]).withTitle(contactInfo[2]).withCompany(contactInfo[3])
+                .withAddress(contactInfo[4]).withHomePhone(contactInfo[6]).withMobilePhone(contactInfo[7]).withWorkPhone(contactInfo[8])
+                .withEmail(contactInfo[10]).withEmail2(contactInfo[11]).withEmail3(contactInfo[12]);
+    }
+
     public Contacts all() {
         if (contactCache != null) return new Contacts(contactCache);
         contactCache = new Contacts();
@@ -120,5 +138,4 @@ public class ContactHelper extends BaseHelper {
         }
         return contactCache;
     }
-
 }

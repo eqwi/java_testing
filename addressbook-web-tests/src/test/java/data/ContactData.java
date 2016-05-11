@@ -5,6 +5,7 @@ public class ContactData {
     private String name;
     private String midName;
     private String surname;
+    private String fullName;
     private String nickname;
     private String title;
     private String company;
@@ -99,6 +100,11 @@ public class ContactData {
         return this;
     }
 
+    public ContactData withFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -157,6 +163,10 @@ public class ContactData {
 
     public String getAllEmails() {
         return allEmails;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public int getId() {
