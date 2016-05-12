@@ -1,10 +1,19 @@
 package data;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
+@XStreamAlias("Group")
 public class GroupData {
 
+    @Expose
     private String groupName;
+    @Expose
     private String groupHeader;
+    @Expose
     private String groupFooter;
+    @XStreamOmitField
     private int id = Integer.MAX_VALUE;
 
     public String getGroupName() {

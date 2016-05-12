@@ -1,0 +1,32 @@
+<list>
+  <Contact>
+    <name>name1</name>
+    <midName>mid1</midName>
+    <surname>surname1</surname>
+    <nickname>vahvah1</nickname>
+    <title>title</title>
+    <company>Company1</company>
+    <address>address1</address>
+    <homePhone>213451</homePhone>
+    <mobilePhone>1231</mobilePhone>
+    <workPhone>67858341</workPhone>
+    <email>name.mid.surname@1</email>
+    <email2>name@1</email2>
+    <email3>surname@1</email3>
+  </Contact>
+  <Contact>
+    <name>name2</name>
+    <midName>mid2</midName>
+    <surname>surname2</surname>
+    <nickname>vahvah2</nickname>
+    <title>title</title>
+    <company>Company2</company>
+    <address>address2</address>
+    <homePhone>213452</homePhone>
+    <mobilePhone>1232</mobilePhone>
+    <workPhone>67858342</workPhone>
+    <email>name.mid.surname@2</email>
+    <email2>name@2</email2>
+    <email3>surname@2</email3>
+  </Contact>
+</list>
