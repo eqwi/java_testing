@@ -21,6 +21,7 @@ public class ContactDetailedInfoTests extends TestBase {
         app.goTo().homePage();
         app.contact().clickModifyContactButtonOfChosenContact(checkingContact.getId());
         checkingContact = app.contact().collectContactDataFromEditPage();
+        app.goTo().homePage();
 
         assertThat(mergeName(checkingContact), equalTo(checkingContactDetailedData.getFullName()));
         assertThat(checkingContact.getNickname(), equalTo(checkingContactDetailedData.getNickname()));

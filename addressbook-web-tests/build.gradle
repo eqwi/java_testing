@@ -12,3 +12,30 @@ dependencies{
     compile 'com.thoughtworks.xstream:xstream:1.4.9'
     compile 'com.google.code.gson:gson:2.6.2'
 }
+
+task testGroups(type: Test) {
+    useTestNG {
+        suites 'src/test/resources/RunConfigs/GroupTests.xml'
+    }
+   if (project.hasProperty('config')) {
+        systemProperty 'config', "${config}"
+   }
+}
+
+task testContacts(type: Test) {
+    useTestNG {
+        suites 'src/test/resources/RunConfigs/ContactTests.xml'
+    }
+    if (project.hasProperty('config')) {
+        systemProperty 'config', "${config}"
+    }
+}
+
+task testAll(type: Test) {
+    useTestNG {
+        suites 'src/test/resources/RunConfigs/AllTests.xml'
+    }
+    if (project.hasProperty('config')) {
+        systemProperty 'config', "${config}"
+    }
+}

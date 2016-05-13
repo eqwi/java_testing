@@ -57,6 +57,7 @@ public class GroupCreationTests extends TestBase {
                 list.add(new Object[] {new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
                 line = reader.readLine();
             }
+            reader.close();
             return list.iterator();
         }*/
 
@@ -68,6 +69,7 @@ public class GroupCreationTests extends TestBase {
             }
             Gson gson = new Gson();
             List<GroupData> list = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType());
+            reader.close();
             return list.stream().map((g) -> new Object[]{(g)}).collect(Collectors.toList()).iterator();
         }
 
@@ -80,6 +82,7 @@ public class GroupCreationTests extends TestBase {
             XStream xStream = new XStream();
             xStream.processAnnotations(GroupData.class);
             List<GroupData> list = (List<GroupData>) xStream.fromXML(xml);
+            reader.close();
             return list.stream().map((g) -> new Object[] {(g)}).collect(Collectors.toList()).iterator();
         }*/
 

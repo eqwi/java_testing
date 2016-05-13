@@ -13,20 +13,5 @@
     "email": "name.mid.surname@1",
     "email2": "name@1",
     "email3": "surname@1"
-  },
-  {
-    "name": "name2",
-    "midName": "mid2",
-    "surname": "surname2",
-    "nickname": "vahvah2",
-    "title": "title",
-    "company": "Company2",
-    "address": "address2",
-    "homePhone": "213452",
-    "mobilePhone": "1232",
-    "workPhone": "67858342",
-    "email": "name.mid.surname@2",
-    "email2": "name@2",
-    "email3": "surname@2"
   }
 ]

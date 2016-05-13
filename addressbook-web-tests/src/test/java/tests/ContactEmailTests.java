@@ -18,6 +18,7 @@ public class ContactEmailTests extends TestBase {
         ContactData checkingContact = contactsList.iterator().next();
         app.contact().clickModifyContactButtonOfChosenContact(checkingContact.getId());
         ContactData checkingContactEditPage = app.contact().collectContactDataFromEditPage();
+        app.goTo().homePage();
 
         assertThat(checkingContact.getAllEmails(), equalTo(mergeEmails(checkingContactEditPage)));
     }

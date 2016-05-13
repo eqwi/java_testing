@@ -42,26 +42,27 @@ public class GroupDataGenerator {
     }
 
     private void saveAsCSV(List<GroupData> groups) throws IOException {
-        Writer writer = new FileWriter("src/test/resources/GroupsData/groups.csv");
-        for (GroupData group : groups) writer.write(String.format("%s;%s;%s\n", group.getGroupName(), group.getGroupHeader(), group.getGroupFooter()));
-        writer.close();
+        try (Writer writer = new FileWriter("src/test/resources/GroupsData/groups.csv")) {
+            for (GroupData group : groups)
+                writer.write(String.format("%s;%s;%s\n", group.getGroupName(), group.getGroupHeader(), group.getGroupFooter()));
+        }
     }
 
     private void saveAsJSON(List<GroupData> groups) throws IOException {
-        Writer writer = new FileWriter("src/test/resources/GroupsData/groups.json");
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(groups);
-        writer.write(json);
-        writer.close();
+        try (Writer writer = new FileWriter("src/test/resources/GroupsData/groups.json")) {
+            writer.write(json);
+        }
     }
 
     private void saveAsXML(List<GroupData> groups) throws IOException {
-        Writer writer = new FileWriter("src/test/resources/GroupsData/groups.xml");
         XStream xstream = new XStream();
         xstream.processAnnotations(GroupData.class);
         String xml = xstream.toXML(groups);
-        writer.write(xml);
-        writer.close();
+        try (Writer writer = new FileWriter("src/test/resources/GroupsData/groups.xml")) {
+            writer.write(xml);
+        }
     }
 
     private List<GroupData> generateGroups(int count) {

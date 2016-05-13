@@ -18,6 +18,7 @@ public class ContactPhoneTests extends TestBase {
         ContactData checkingContact = contactsList.iterator().next();
         app.contact().clickModifyContactButtonOfChosenContact(checkingContact.getId());
         ContactData checkingContactEditPage = app.contact().collectContactDataFromEditPage();
+        app.goTo().homePage();
 
         assertThat(checkingContact.getAllPhones(), equalTo(mergePhones(checkingContactEditPage)));
     }
