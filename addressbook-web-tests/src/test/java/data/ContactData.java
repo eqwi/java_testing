@@ -3,43 +3,76 @@ package data;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import jdk.internal.instrumentation.TypeMapping;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 @XStreamAlias("Contact")
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
     @Expose
+    @Column(name = "firstname")
     private String name;
     @Expose
+    @Column(name = "middlename")
     private String midName;
     @Expose
+    @Column(name = "lastname")
     private String surname;
     @Expose
-    private String fullName;
-    @Expose
+    @Column(name = "nickname")
     private String nickname;
     @Expose
+    @Column(name = "title")
     private String title;
     @Expose
+    @Column(name = "company")
     private String company;
     @Expose
+    @Column(name = "address")
+    @Type(type = "text")
     private String address;
     @Expose
+    @Column(name = "home")
+    @Type(type = "text")
     private String homePhone;
     @Expose
+    @Column(name = "mobile")
+    @Type(type = "text")
     private String mobilePhone;
     @Expose
+    @Column(name = "work")
+    @Type(type = "text")
     private String workPhone;
     @Expose
+    @Column(name = "email")
+    @Type(type = "text")
     private String email;
     @Expose
+    @Column(name = "email2")
+    @Type(type = "text")
     private String email2;
     @Expose
+    @Column(name = "email3")
+    @Type(type = "text")
     private String email3;
     @XStreamOmitField
+    @Id
+    @Column(name = "id")
     private int id = Integer.MAX_VALUE;
     @XStreamOmitField
+    @Transient
     private String allEmails;
     @XStreamOmitField
+    @Transient
     private String allPhones;
+    @Expose
+    @Transient
+    private String fullName;
+    @Transient
+    private String group;
 
     public ContactData withName(String name) {
         this.name = name;
@@ -126,6 +159,11 @@ public class ContactData {
         return this;
     }
 
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -192,6 +230,10 @@ public class ContactData {
 
     public int getId() {
         return id;
+    }
+
+    public String getGroup() {
+        return group;
     }
 
     @Override

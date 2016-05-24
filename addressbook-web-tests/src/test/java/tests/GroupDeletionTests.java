@@ -13,19 +13,19 @@ public class GroupDeletionTests extends TestBase {
 
     @BeforeMethod
     private void testDataCheckout() {
-        app.goTo().groupPage();
-        if (app.group().all().size() == 0) {
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
             app.group().create(new GroupData().withName("New group").withHeader("There is header").withFooter("There is footer"));
         }
     }
 
     @Test
     public void testGroupDeletion() {
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
         GroupData deletedGroup = before.iterator().next();
+        app.goTo().groupPage();
         app.group().delete(deletedGroup);
-        Assert.assertEquals(before.size() - 1, app.group().count());
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         assertThat(before.without(deletedGroup), equalTo(after));
     }

@@ -20,15 +20,14 @@ public class ContactCreationTests extends TestBase {
 
     @Test(dataProvider = "listOfContacts")
     public void testContactCreation(ContactData contact) {
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
         ContactData newContact = new ContactData()
                 .withName(contact.getName()).withMidName(contact.getMidName()).withSurname(contact.getSurname()).withNickname(contact.getNickname())
                 .withTitle(contact.getTitle()).withCompany(contact.getCompany()).withAddress(contact.getAddress()).withHomePhone(contact.getHomePhone())
                 .withMobilePhone(contact.getMobilePhone()).withWorkPhone(contact.getWorkPhone()).withEmail(contact.getEmail()).withEmail2(contact.getEmail2())
                 .withEmail3(contact.getEmail3());
         app.contact().create(newContact);
-        Assert.assertEquals(before.size() + 1, app.contact().count());
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
 
         assertThat(before.withAdded(newContact.withId(after.stream().mapToInt((c) -> (c.getId())).max().getAsInt())), equalTo(after));
     }

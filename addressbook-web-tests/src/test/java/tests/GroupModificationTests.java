@@ -13,20 +13,20 @@ public class GroupModificationTests extends TestBase {
 
     @BeforeMethod
     private void testDataCheckout() {
-        app.goTo().groupPage();
-        if (app.group().all().size() == 0) {
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
             app.group().create(new GroupData().withName("New group").withHeader("There is header").withFooter("There is footer"));
         }
     }
 
     @Test
     public void testGroupModification() {
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
         GroupData modifiedGroup = before.iterator().next();
         GroupData group = new GroupData().withId(modifiedGroup.getId()).withName("new group name").withHeader("There is header").withFooter(null);
+        app.goTo().groupPage();
         app.group().modify(group);
-        Assert.assertEquals(before.size(), app.group().count());
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         assertThat(before.without(modifiedGroup).withAdded(group), equalTo(after));
     }

@@ -24,11 +24,10 @@ public class GroupCreationTests extends TestBase {
     @Test(dataProvider = "listOfGroups")
     public void testGroupCreation(GroupData group) {
         app.goTo().groupPage();
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
         GroupData newGroup = new GroupData().withName(group.getGroupName()).withHeader(group.getGroupHeader()).withFooter(group.getGroupFooter());
         app.group().create(newGroup);
-        assertThat(before.size() + 1, equalTo(app.group().count()));
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         assertThat(before.withAdded(newGroup.withId(after.stream().mapToInt((g) -> (g.getId())).max().getAsInt())), equalTo(after));
     }

@@ -20,11 +20,14 @@ public class ApplicationManager {
     private GroupHelper groupHelper;
     private NavigationHelper navigationHelper;
     private SessionHelper sessionHelper;
+    private DbHelper dbHelper;
 
     public void init() throws IOException {
         String propertyFile = System.getProperty("config", "web");
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", propertyFile))));
         this.browser = properties.getProperty("test.browser");
+
+        dbHelper = new DbHelper();
 
         if (browser.equals("firefox")) wd = new FirefoxDriver();
         else if (browser.equals("chrome")) wd = new ChromeDriver();
@@ -56,5 +59,9 @@ public class ApplicationManager {
 
     public NavigationHelper goTo() {
         return navigationHelper;
+    }
+
+    public DbHelper db() {
+        return dbHelper;
     }
 }
