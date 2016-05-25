@@ -2,6 +2,7 @@ package appmanager;
 
 import data.ContactData;
 import data.Contacts;
+import data.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -137,5 +138,33 @@ public class ContactHelper extends BaseHelper {
             i--;
         }
         return contactCache;
+    }
+
+    public void addContactToGroup(ContactData contactToAdd, GroupData groupToAdd) {
+        selectContactById(contactToAdd.getId());
+        int groupCount = wd.findElements(By.xpath("//select[@name='to_group']/option")).size();
+        wd.findElement(By.name("to_group")).click();
+        for (int i = 1; i <= groupCount; i++) {
+            System.out.println(wd.findElement(By.xpath("//select[@name='to_group']/option[" + i + "]")).getText());
+            if (wd.findElement(By.xpath("//select[@name='to_group']/option[" + i + "]")).getText().equals(groupToAdd.getGroupName())) {
+                wd.findElement(By.xpath("//select[@name='to_group']/option[" + i + "]")).click();
+            }
+        }
+        wd.findElement(By.name("add")).click();
+        navigationHelper.homePage();
+    }
+
+    public void removeContactFromGroup(ContactData contactToRemove, GroupData groupToRemove) {
+        int selectCount = wd.findElements(By.xpath("//select[@name='group']/option")).size();
+        wd.findElement(By.name("group")).click();
+        for (int i = 1; i <= selectCount; i++) {
+            System.out.println(wd.findElement(By.xpath("//select[@name='group']/option[" + i + "]")).getText());
+            if (wd.findElement(By.xpath("//select[@name='group']/option[" + i + "]")).getText().equals(groupToRemove.getGroupName())) {
+                wd.findElement(By.xpath("//select[@name='group']/option[" + i + "]")).click();
+            }
+        }
+        selectContactById(contactToRemove.getId());
+        wd.findElement(By.name("remove")).click();
+        navigationHelper.homePage();
     }
 }
