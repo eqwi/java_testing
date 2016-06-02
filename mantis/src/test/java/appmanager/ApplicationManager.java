@@ -15,23 +15,17 @@ public class ApplicationManager {
     private static final Properties properties = new Properties();
     private WebDriver wd;
     private String browser;
+    private RegistrationHelper registrationHelper;
+    private FtpHelper ftp;
 
     public void init() throws IOException {
         String propertyFile = System.getProperty("config", "web");
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", propertyFile))));
         this.browser = properties.getProperty("test.browser");
-
-        if (browser.equals("firefox")) wd = new FirefoxDriver();
-        else if (browser.equals("chrome")) wd = new ChromeDriver();
-        else if (browser.equals("ie")) wd = new InternetExplorerDriver();
-
-        wd.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-
-        wd.get(properties.getProperty("test.baseURL"));
     }
 
     public void stop() {
-        wd.quit();
+        if (wd != null) wd.quit();
     }
 
     public String getProperty(String key) {
@@ -40,5 +34,26 @@ public class ApplicationManager {
 
     public HttpSession newSession() {
         return new HttpSession(this);
+    }
+
+    public FtpHelper ftp() {
+        if (ftp == null) ftp = new FtpHelper(this);
+        return ftp;
+    }
+
+    public RegistrationHelper registration() {
+        if (registrationHelper == null) registrationHelper = new RegistrationHelper(this);
+        return registrationHelper;
+    }
+
+    public WebDriver getDriver() {
+
+        if (browser.equals("firefox")) wd = new FirefoxDriver();
+        else if (browser.equals("chrome")) wd = new ChromeDriver();
+        else if (browser.equals("ie")) wd = new InternetExplorerDriver();
+
+        wd.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+
+        return wd;
     }
 }
