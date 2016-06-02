@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class TestBase {
 
-    protected static ApplicationManager app = new ApplicationManager();
+    protected ApplicationManager app = new ApplicationManager();
 
     @BeforeSuite
     public void setUp() throws Exception {

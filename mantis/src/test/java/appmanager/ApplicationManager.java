@@ -17,6 +17,7 @@ public class ApplicationManager {
     private String browser;
     private RegistrationHelper registrationHelper;
     private FtpHelper ftp;
+    private MailHelper mailHelper;
 
     public void init() throws IOException {
         String propertyFile = System.getProperty("config", "web");
@@ -55,5 +56,10 @@ public class ApplicationManager {
         wd.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
         return wd;
+    }
+
+    public MailHelper mail() {
+        if (mailHelper == null) mailHelper = new MailHelper(this);
+        return mailHelper;
     }
 }
