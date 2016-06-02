@@ -24,7 +24,7 @@ public class ResetPasswordTests extends TestBase {
     public void resetPassword() throws IOException, MessagingException {
         String newPassword = "pass1234";
         UserInfo user = app.registration().resetPassword();
-        List<MailMessage> mailMessages = app.mail().waitForMail(2, 10000);
+        List<MailMessage> mailMessages = app.mail().waitForMail(1, 10000);
         String confirmationLink = findConfirmationLink(mailMessages, user.mail());
         app.registration().changePassword(confirmationLink, newPassword);
         assertTrue(app.newSession().login(user.userName(), newPassword));
