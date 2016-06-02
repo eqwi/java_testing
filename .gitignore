@@ -12,3 +12,5 @@ gradle-app.setting
 .idea/workspace.xml
 addressbook-web-tests/chromedriver.exe
 addressbook-web-tests/IEDriverServer.exe
+mantis/chromedriver.exe
+mantis/IEDriverServer.exe
