@@ -18,6 +18,7 @@ public class ApplicationManager {
     private RegistrationHelper registrationHelper;
     private FtpHelper ftp;
     private MailHelper mailHelper;
+    private SoapHelper soapHelper;
 
     public void init() throws IOException {
         String propertyFile = System.getProperty("config", "web");
@@ -61,5 +62,10 @@ public class ApplicationManager {
     public MailHelper mail() {
         if (mailHelper == null) mailHelper = new MailHelper(this);
         return mailHelper;
+    }
+
+    public SoapHelper soap() {
+        if (soapHelper == null) soapHelper = new SoapHelper(this);
+        return soapHelper;
     }
 }
