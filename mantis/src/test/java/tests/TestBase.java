@@ -39,7 +39,7 @@ public class TestBase {
     }
 
     public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-        if (isIssueOpen(issueId)) {
+        if (!isIssueOpen(issueId)) {
             throw new SkipException("Ignored because of issue " + issueId);
         }
     }
