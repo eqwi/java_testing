@@ -2,7 +2,6 @@ package tests;
 
 import data.GroupData;
 import data.Groups;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

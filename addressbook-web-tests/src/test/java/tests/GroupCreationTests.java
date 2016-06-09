@@ -2,22 +2,18 @@ package tests;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.thoughtworks.xstream.XStream;
 import data.GroupData;
 import data.Groups;
-import org.ietf.jgss.GSSContext;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.fail;
 
 public class GroupCreationTests extends TestBase {
 

@@ -2,7 +2,6 @@ package tests;
 
 import data.ContactData;
 import data.Contacts;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
